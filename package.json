@@ -1,10 +1,6 @@
 {
   "name": "nft-marketplace",
-  "version": "0.4.0",
-  "description": "A monorepo template built with Bun, Hono, Vite, and React",
-  "author": "Steve Simkins",
-  "license": "MIT",
-  "homepage": "https://github.com/stevedylandev/bhvr",
+  "version": "0.0.1",
   "packageManager": "bun@1.2.4",
   "workspaces": [
     "./server",
@@ -23,16 +19,11 @@
     "test": "turbo test",
     "postinstall": "turbo build --filter=shared --filter=server"
   },
-  "keywords": [
-    "bun",
-    "hono",
-    "react",
-    "vite",
-    "monorepo",
-    "turbo"
-  ],
   "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^5.2.2",
     "bun-types": "latest",
+    "prettier": "^3.6.2",
+    "prettier-plugin-tailwindcss": "^0.6.14",
     "turbo": "^2.5.5"
   },
   "peerDependencies": {
