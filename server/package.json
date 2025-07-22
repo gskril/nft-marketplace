@@ -9,7 +9,6 @@
   },
   "dependencies": {
     "hono": "^4.7.11",
-    "shared": "workspace:*",
     "viem": "^2.33.0"
   },
   "devDependencies": {

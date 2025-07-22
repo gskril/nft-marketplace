@@ -4,8 +4,7 @@
   "packageManager": "bun@1.2.4",
   "workspaces": [
     "./server",
-    "./client",
-    "./shared"
+    "./client"
   ],
   "scripts": {
     "dev": "turbo dev",
@@ -17,7 +16,7 @@
     "lint": "turbo lint",
     "type-check": "turbo type-check",
     "test": "turbo test",
-    "postinstall": "turbo build --filter=shared --filter=server"
+    "postinstall": "turbo build --filter=server"
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",

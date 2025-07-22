@@ -12,8 +12,7 @@
     "baseUrl": "./",
     "paths": {
       "@server/*": ["./server/src/*"],
-      "@client/*": ["./client/src/*"],
-      "@shared/*": ["./shared/src/*"]
+      "@client/*": ["./client/src/*"]
     },
 
     // Module resolution
