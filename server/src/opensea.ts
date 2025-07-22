@@ -60,7 +60,7 @@ export type Nft = {
   contract: Hex
   token_standard: 'erc1155' | 'erc721'
   name: string
-  description: string
+  description: string | null
   image_url: string
   display_image_url: string
   display_animation_url: string | null

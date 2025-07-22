@@ -64,7 +64,7 @@ export async function getNft(c: Context) {
   ])
 
   const [base, events, listings, offers] = await Promise.all([
-    baseRes.json() as Promise<Nft>,
+    baseRes.json() as Promise<{ nft: Nft }>,
     eventsRes.json() as Promise<{
       asset_events: NftEvent[]
       next: string | null
@@ -79,5 +79,10 @@ export async function getNft(c: Context) {
     }>,
   ])
 
-  return c.json({ ...base, events: events.asset_events, listings, offers })
+  return c.json({
+    ...base.nft,
+    events: events.asset_events,
+    listings: listings.orders,
+    offers: offers.orders,
+  })
 }
