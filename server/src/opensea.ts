@@ -7,6 +7,7 @@ export function openseaFetch(path: string, options: RequestInit = {}) {
     ...options,
     headers: {
       'X-API-KEY': process.env.OPENSEA_API_KEY!,
+      'Content-Type': 'application/json',
     },
   })
 }
@@ -173,7 +174,7 @@ type ProtocolData = {
     totalOriginalConsiderationItems: number
     counter: number
   }
-  signature: any
+  signature: Hex
 }
 
 export type Order = {
@@ -285,9 +286,33 @@ export type FulfillmentData = {
     transaction: {
       function: string
       chain: number
-      to: string
-      value: number
-      input_data: any
+      to: Hex
+      value: string
+      input_data: {
+        parameters: {
+          considerationToken: Hex
+          considerationIdentifier: string
+          considerationAmount: string
+          offerer: Hex
+          zone: Hex
+          offerToken: Hex
+          offerIdentifier: string
+          offerAmount: string
+          basicOrderType: number
+          startTime: string
+          endTime: string
+          zoneHash: Hex
+          salt: string
+          offererConduitKey: Hex
+          fulfillerConduitKey: Hex
+          totalOriginalAdditionalRecipients: string
+          additionalRecipients: Array<{
+            amount: string
+            recipient: Hex
+          }>
+          signature: Hex
+        }
+      }
     }
     orders: ProtocolData[]
   }

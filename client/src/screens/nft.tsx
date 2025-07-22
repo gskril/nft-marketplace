@@ -1,8 +1,10 @@
 import { Link, useParams } from 'react-router-dom'
-import { formatEther } from 'viem'
+import { formatEther, parseAbi } from 'viem'
+import { useAccount, useWriteContract } from 'wagmi'
 
+import { ConnectButton } from '@/components/connectButton'
 import { Button } from '@/components/ui/button'
-import { useNft } from '@/components/useHono'
+import { useFulfillListing, useNft } from '@/components/useHono'
 import { truncateAddress } from '@/lib/utils'
 
 export function NftScreen() {
@@ -15,9 +17,13 @@ export function NftScreen() {
 
   return (
     <div className="flex flex-col gap-4 p-2 pt-4">
-      <Link to="/" className="text-sm text-gray-500">
-        ← Back to collection
-      </Link>
+      <div className="flex items-center justify-between gap-4">
+        <Link to="/" className="text-sm text-gray-500">
+          ← Back to collection
+        </Link>
+
+        <ConnectButton />
+      </div>
 
       <hr />
 
@@ -52,7 +58,7 @@ export function NftScreen() {
               })}
             </span>
           </div>
-          <Button>Buy now</Button>
+          <BuyNowButton nft={nft.data} />
         </div>
       )}
 
@@ -77,5 +83,54 @@ export function NftScreen() {
         </div>
       )}
     </div>
+  )
+}
+
+function BuyNowButton({ nft }: { nft: ReturnType<typeof useNft>['data'] }) {
+  const { address } = useAccount()
+  const fulfillListing = useFulfillListing(nft!.listings[0]!)
+  const tx = useWriteContract()
+
+  function handleClick() {
+    // This shouldn't happen but is nice for typescript
+    if (!fulfillListing.data) return
+    const transaction = fulfillListing.data.fulfillment_data.transaction
+    const params = transaction.input_data.parameters
+
+    tx.writeContract({
+      abi: parseAbi([
+        'function fulfillBasicOrder_efficient_6GL6yc((address considerationToken,uint256 considerationIdentifier,uint256 considerationAmount,address offerer,address zone,address offerToken,uint256 offerIdentifier,uint256 offerAmount,uint8 basicOrderType,uint256 startTime,uint256 endTime,bytes32 zoneHash,uint256 salt,bytes32 offererConduitKey,bytes32 fulfillerConduitKey,uint256 totalOriginalAdditionalRecipients,(uint256 amount,address recipient)[] additionalRecipients,bytes signature)) payable returns (bool fulfilled)',
+      ]),
+      address: transaction.to,
+      functionName: 'fulfillBasicOrder_efficient_6GL6yc',
+      value: BigInt(transaction.value),
+      args: [
+        {
+          ...params,
+          considerationIdentifier: BigInt(params.considerationIdentifier),
+          considerationAmount: BigInt(params.considerationAmount),
+          offerIdentifier: BigInt(params.offerIdentifier),
+          offerAmount: BigInt(params.offerAmount),
+          startTime: BigInt(params.startTime),
+          endTime: BigInt(params.endTime),
+          salt: BigInt(params.salt),
+          totalOriginalAdditionalRecipients: BigInt(
+            params.totalOriginalAdditionalRecipients
+          ),
+          additionalRecipients: params.additionalRecipients.map(
+            (recipient) => ({
+              ...recipient,
+              amount: BigInt(recipient.amount),
+            })
+          ),
+        },
+      ],
+    })
+  }
+
+  return (
+    <Button disabled={!address || !fulfillListing.data} onClick={handleClick}>
+      Buy now
+    </Button>
   )
 }
