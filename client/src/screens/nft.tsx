@@ -38,6 +38,15 @@ export function NftScreen() {
 
       <hr />
 
+      {/* If there's no listing and no offers, show a message */}
+      {nft.data.listings.length === 0 && nft.data.offers.length === 0 && (
+        <div className="flex w-full flex-col items-center justify-center rounded-md bg-gray-100 p-4">
+          <span className="text-sm text-gray-500 uppercase">
+            No listings or offers for this NFT
+          </span>
+        </div>
+      )}
+
       {nft.data.listings.length > 0 && (
         <div className="flex flex-col">
           <span className="text-sm text-gray-500 uppercase">Buy now for</span>

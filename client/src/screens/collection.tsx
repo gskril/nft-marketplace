@@ -28,7 +28,7 @@ export function CollectionScreen() {
   ]
 
   return (
-    <div className="flex flex-col gap-4 p-2 pt-4">
+    <div className="flex flex-col gap-4 p-2 py-4">
       <div>
         <h1 className="text-2xl font-bold">{collection.data.name}</h1>
         <span className="text-sm text-gray-500">
