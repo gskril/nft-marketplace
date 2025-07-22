@@ -1,10 +1,15 @@
 import { Route, Routes } from 'react-router-dom'
 
+import { Layout } from '@/components/layout'
+import { CollectionScreen } from '@/screens/Collection'
+
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<div>Home</div>} />
-    </Routes>
+    <Layout>
+      <Routes>
+        <Route path="/" element={<CollectionScreen />} />
+      </Routes>
+    </Layout>
   )
 }
 
